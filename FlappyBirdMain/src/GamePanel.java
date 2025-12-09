@@ -11,8 +11,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     // Bird
     int birdX = 50;
     int birdY = 300;
-    int birdWidth = 34;
-    int birdHeight = 24;
+    int birdWidth = 50;
+    int birdHeight = 50;
     double velocity = 0;
     double gravity = 0.5;
     double jumpStrength = -8;
