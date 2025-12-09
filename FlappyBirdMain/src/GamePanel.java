@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         requestFocusInWindow(); // <-- wichtig für Tastatureingaben
 
         // Beispielbilder (Oder PNGs ersetzen)
-        birdImage = null; // Lade PNG später rein, wenn du willst
+        birdImage = new ImageIcon(getClass().getResource("/Bilder/biene.png")).getImage(); // Lade PNG später rein, wenn du willst
         pipeTopImage = null;
         pipeBottomImage = null;
 
@@ -79,9 +79,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         g.fillRect(0, 0, boardWidth, boardHeight);
 
         // Bird
-        g.setColor(Color.red);
-        g.fillRect(birdX, birdY, birdWidth, birdHeight);
-
+//        g.setColor(Color.red);
+//        g.fillRect(birdX, birdY, birdWidth, birdHeight);
+        g.drawImage(birdImage, birdX, birdY, birdWidth, birdHeight, null);
         // Pipes
         g.setColor(Color.green);
         for (Pipe p : pipes) {
