@@ -40,8 +40,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
         requestFocusInWindow(); // <-- wichtig für Tastatureingaben
 
-        // Beispielbilder (Oder PNGs ersetzen)
-        birdImage = new ImageIcon(getClass().getResource("/Bilder/biene.png")).getImage(); // Lade PNG später rein, wenn du willst
+        // Bilder: Tier, Röhren (oben + unten)
+        birdImage = new ImageIcon(getClass().getResource("/Bilder/biene.png")).getImage();
         pipeTopImage = null;
         pipeBottomImage = null;
 
