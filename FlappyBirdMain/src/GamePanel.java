@@ -11,8 +11,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     // Bird
     int birdX = 50;
     int birdY = 300;
-    int birdWidth = 50;
-    int birdHeight = 50;
+    int birdWidth = 34;
+    int birdHeight = 24;
     double velocity = 0;
     double gravity = 0.5;
     double jumpStrength = -8;
@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     Image birdImage;
     Image pipeTopImage;
     Image pipeBottomImage;
+    Image backgroundImage;
 
     // Pipes
     ArrayList<Pipe> pipes = new ArrayList<>();
@@ -40,10 +41,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
         requestFocusInWindow(); // <-- wichtig für Tastatureingaben
 
-        // Bilder: Tier, Röhren (oben + unten)
-        birdImage = new ImageIcon(getClass().getResource("/Bilder/biene.png")).getImage();
-        pipeTopImage = null;
-        pipeBottomImage = null;
+        // Beispielbilder (Oder PNGs ersetzen)
+        birdImage = new ImageIcon(getClass().getResource("/bilder/biene.png")).getImage(); // Lade PNG später rein, wenn du willst
+        pipeTopImage = new ImageIcon(getClass().getResource("/bilder/roehre_runter.png")).getImage();
+        pipeBottomImage = new ImageIcon(getClass().getResource("/bilder/roehre_hoch.png")).getImage();
+        backgroundImage = new ImageIcon(getClass().getResource("/bilder/hintergrund.png")).getImage();
 
         startGame();
     }
@@ -64,10 +66,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         int randomY = (int) (Math.random() * (boardHeight - pipeGap - 200)) + 100;
 
         // obere Pipe
-        pipes.add(new Pipe(boardWidth, randomY - pipeGap - pipeWidth, pipeWidth, pipeWidth, true));
+//        pipes.add(new Pipe(boardWidth, randomY - pipeGap - pipeWidth, pipeWidth, pipeWidth, true));
+        pipes.add(new Pipe(boardWidth, 0, pipeWidth, randomY - pipeGap, true));
 
         // untere Pipe
-        pipes.add(new Pipe(boardWidth, randomY, pipeWidth, pipeWidth, false));
+        pipes.add(new Pipe(boardWidth, randomY, pipeWidth, boardHeight, false));
     }
 
     @Override
@@ -75,17 +78,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         super.paint(g);
 
         // Hintergrund
-        g.setColor(Color.cyan);
-        g.fillRect(0, 0, boardWidth, boardHeight);
+//        g.setColor(Color.cyan);
+//        g.fillRect(0, 0, boardWidth, boardHeight);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+
 
         // Bird
 //        g.setColor(Color.red);
 //        g.fillRect(birdX, birdY, birdWidth, birdHeight);
         g.drawImage(birdImage, birdX, birdY, birdWidth, birdHeight, null);
+
         // Pipes
-        g.setColor(Color.green);
+//        g.setColor(Color.green);
+//        for (Pipe p : pipes) {
+//            g.fillRect(p.x, p.y, p.width, p.height);
+//        }
         for (Pipe p : pipes) {
-            g.fillRect(p.x, p.y, p.width, p.height);
+            if (p.isTop) {
+                // obere Pipe
+                g.drawImage(pipeTopImage, p.x, p.y, p.width, p.height, null);
+            } else {
+                // untere Pipe
+                g.drawImage(pipeBottomImage, p.x, p.y, p.width, p.height, null);
+            }
         }
 
         if (gameOver) {
