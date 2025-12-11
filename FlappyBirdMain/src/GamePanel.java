@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     boolean gameOver = false;
 
     public GamePanel(int width, int height) {
-        String filepath = "FlappyBirdMain\\SoundFiles\\MusicLoop.wav"; //start background music loop
+        String filepath = "/SoundFiles/MusicLoop.wav"; //start background music loop
 	    PlayMusic(filepath, 0);
 
         this.boardWidth = width;
@@ -125,9 +125,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             g.drawString("Drücke R zum Neustart", 60, 340);
 
-            String filepath = "FlappyBirdMain\\\\SoundFiles\\\\Wall-Hit2.wav"; //start background music loop
+            String filepath = "/SoundFiles/Wall-Hit2.wav"; //start background music loop
 	        PlayMusic(filepath, 1);
-            filepath = "FlappyBirdMain\\SoundFiles\\Wilhelm Scream - Sound Effect (HD) - Gaming Sound FX.wav"; //start background music loop
+            filepath = "/SoundFiles/Wilhelm Scream - Sound Effect (HD) - Gaming Sound FX.wav"; //start background music loop
 	        PlayMusic(filepath, 1);
         }
     }
