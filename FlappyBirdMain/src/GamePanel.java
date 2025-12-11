@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
@@ -8,13 +9,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     int boardWidth;
     int boardHeight;
 
+//    URL file = new URL("/sounds/gameover.wav");
+
     // Bird
     int birdX = 50;
     int birdY = 300;
     int birdWidth = 45;
     int birdHeight = 45;
     double velocity = 0;
-    double gravity = 0.5;
+    double gravity = 0.7;
     double jumpStrength = -8;
 
     // Images
@@ -26,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     // Pipes
     ArrayList<Pipe> pipes = new ArrayList<>();
     int pipeWidth = 64;
-    int pipeGap = 180;
+    int pipeGap = 200;
     int pipeSpeed = 3;
 
     Timer gameLoop;
@@ -63,7 +66,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     }
 
     public void spawnPipes() {
-        int randomY = (int) (Math.random() * (boardHeight - pipeGap - 200)) + 100;
+        int randomY = (int) (Math.random() * (boardHeight - pipeGap - 200)) + 200;
 
         // obere Pipe
 //        pipes.add(new Pipe(boardWidth, randomY - pipeGap - pipeWidth, pipeWidth, pipeWidth, true));
@@ -81,6 +84,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 //        g.setColor(Color.cyan);
 //        g.fillRect(0, 0, boardWidth, boardHeight);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+
 
 
         // Bird
@@ -102,6 +106,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                 g.drawImage(pipeBottomImage, p.x, p.y, p.width, p.height, null);
             }
         }
+        //------------------------------------------------------
+
+
 
         if (gameOver) {
             g.setColor(Color.black);
