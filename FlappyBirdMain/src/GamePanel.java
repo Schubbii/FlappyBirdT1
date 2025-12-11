@@ -4,6 +4,11 @@ import java.awt.event.*;
 import java.net.URL;
 import java.util.ArrayList;
 
+import java.io.File;                            //Audio Imports
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     int boardWidth;
@@ -36,6 +41,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     boolean gameOver = false;
 
     public GamePanel(int width, int height) {
+        String filepath = "FlappyBirdMain\\SoundFiles\\MusicLoop.wav"; //start background music loop
+	    PlayMusic(filepath, 0);
+
         this.boardWidth = width;
         this.boardHeight = height;
 
@@ -117,6 +125,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             g.drawString("Drücke R zum Neustart", 60, 340);
+
+            String filepath = "FlappyBirdMain\\\\SoundFiles\\\\Wall-Hit2.wav"; //start background music loop
+	        PlayMusic(filepath, 1);
+            filepath = "FlappyBirdMain\\SoundFiles\\Wilhelm Scream - Sound Effect (HD) - Gaming Sound FX.wav"; //start background music loop
+	        PlayMusic(filepath, 1);
         }
     }
 
@@ -186,4 +199,35 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             this.isTop = isTop;
         }
     }
+
+
+    public static void PlayMusic(String location, int loop) {         //music player
+		try
+		{
+			File musicPath = new File(location);
+
+			if (musicPath.exists()) {
+				AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+				Clip clip = AudioSystem.getClip();
+				clip.open(audioInput);
+				clip.start();
+                if (loop != 1) {
+                    if (loop == 0) {
+                        clip.loop(Clip.LOOP_CONTINUOUSLY);
+                    } else {
+                        clip.loop(loop);
+                    }
+                }
+			}
+			else {System.out.println("Can*t find file");
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+
+
+
+	}
 }
