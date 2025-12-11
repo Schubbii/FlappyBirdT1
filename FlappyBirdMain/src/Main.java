@@ -10,7 +10,10 @@ public class Main {
         JFrame frame = new JFrame("Floppy Bee");
         GamePanel panel = new GamePanel(boardWidth, boardHeight);
 
-        Image icon = new ImageIcon("src/Bilder/Biene.png").getImage();
+
+
+
+        Image icon = new ImageIcon(Main.class.getResource("/Bilder/Biene.png")).getImage();
         frame.setIconImage(icon);
 
         frame.add(panel);
