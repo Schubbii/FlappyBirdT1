@@ -76,8 +76,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         int randomY = (int) (Math.random() * (boardHeight - pipeGap - 200)) + 200;
 
         // obere Pipe
-//        pipes.add(new Pipe(boardWidth, randomY - pipeGap - pipeWidth, pipeWidth, pipeWidth, true));
-        pipes.add(new Pipe(boardWidth, 0, pipeWidth, randomY - pipeGap, true));
+        pipes.add(new Pipe(boardWidth, (randomY - pipeGap) - pipeTopImage.getHeight(null), pipeWidth, pipeTopImage.getHeight(null), true));
 
         // untere Pipe
         pipes.add(new Pipe(boardWidth, randomY, pipeWidth, boardHeight, false));
