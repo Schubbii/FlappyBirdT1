@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     boolean gameOver = false;
 
     public GamePanel(int width, int height) {
-        String filepath = "/SoundFiles/MusicLoop.wav"; //start background music loop
+        String filepath = "FlappyBirdMain/SoundFiles/MusicLoop.wav"; //start background music loop
 	    PlayMusic(filepath, 0);
 
         this.boardWidth = width;
@@ -119,9 +119,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             g.drawString("Drücke R zum Neustart", 60, 340);
 
-            String filepath = "/SoundFiles/Wall-Hit2.wav"; //start background music loop
+            String filepath = "FlappyBirdMain/SoundFiles/Wall-Hit2.wav"; //wall hit sound
 	        PlayMusic(filepath, 1);
-            filepath = "/SoundFiles/Wilhelm Scream - Sound Effect (HD) - Gaming Sound FX.wav"; //start background music loop
+            filepath = "FlappyBirdMain/SoundFiles/Wilhelm Scream - Sound Effect (HD) - Gaming Sound FX.wav"; //scream sound
 	        PlayMusic(filepath, 1);
         }
     }
@@ -170,6 +170,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE && !gameOver) {
             velocity = jumpStrength;
+            String filepath = "FlappyBirdMain/SoundFiles/Swoop.wav"; //start background music loop
+	        PlayMusic(filepath, 1);
         }
 
         if (e.getKeyCode() == KeyEvent.VK_R && gameOver) {
