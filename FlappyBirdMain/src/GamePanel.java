@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 import java.io.File;                            //Audio Imports
@@ -14,6 +15,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     int boardHeight;
 
 //    URL file = new URL("/sounds/gameover.wav");
+
+    //gameStart
+    boolean gameStarted = false;
+
+    //score
+    int score = 0;
 
     // Bird
     int birdX = 50;
@@ -34,14 +41,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     ArrayList<Pipe> pipes = new ArrayList<>();
     int pipeWidth = 64;
     int pipeGap = 200;
-    int pipeSpeed = 3;
+    double pipeSpeed = 3;
 
     Timer gameLoop;
     boolean gameOver = false;
 
     public GamePanel(int width, int height) {
         String filepath = "FlappyBirdMain/SoundFiles/MusicLoop.wav"; //start background music loop
-	    PlayMusic(filepath, 0);
+        PlayMusic(filepath, 0);
 
         this.boardWidth = width;
         this.boardHeight = height;
@@ -61,6 +68,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     }
 
     public void startGame() {
+        score = 0;
+        gameStarted = false;
+
         pipes.clear();
         gameOver = false;
         birdY = boardHeight / 2;
@@ -72,11 +82,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         gameLoop.start();
     }
 
+
     public void spawnPipes() {
         int randomY = (int) (Math.random() * (boardHeight - pipeGap - 200)) + 200;
-
         // obere Pipe
         pipes.add(new Pipe(boardWidth, (randomY - pipeGap) - pipeTopImage.getHeight(null), pipeWidth, pipeTopImage.getHeight(null), true));
+
 
         // untere Pipe
         pipes.add(new Pipe(boardWidth, randomY, pipeWidth, boardHeight, false));
@@ -112,9 +123,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                 g.drawImage(pipeBottomImage, p.x, p.y, p.width, p.height, null);
             }
         }
-        //------------------------------------------------------
+
+        //score
+        g.setColor(Color.black);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Score: " + score, 10, 40);
 
 
+        //start Screen
+        if (!gameStarted && !gameOver) {
+            g.setColor(Color.black);
+            g.setFont(new Font("Arial", Font.BOLD, 26));
+            g.drawString("Bitte Leertaste drücken", 40, 300);
+            return; // verhindert unnötiges Zeichnen
+        }
 
         if (gameOver) {
             g.setColor(Color.black);
@@ -125,14 +147,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             g.drawString("Drücke R zum Neustart", 60, 340);
 
             String filepath = "FlappyBirdMain/SoundFiles/Wall-Hit2.wav"; //wall hit sound
-	        PlayMusic(filepath, 1);
+            PlayMusic(filepath, 1);
             filepath = "FlappyBirdMain/SoundFiles/Wilhelm Scream - Sound Effect (HD) - Gaming Sound FX.wav"; //scream sound
-	        PlayMusic(filepath, 1);
+            PlayMusic(filepath, 1);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if (!gameStarted){
+            repaint();
+            return;
+        }
+
         if (!gameOver) {
 
             // Bird Physik
@@ -143,10 +171,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             for (Pipe p : pipes) {
                 p.x -= pipeSpeed;
             }
+            for (Pipe p : pipes) {
+                // Nur untere Pipe bewerten, sonst doppelte Punkte
+                if (!p.isTop && !p.passed && p.x + p.width < birdX) {
+                    p.passed = true;
+                    score++;
+                }
+            }
 
             // Neue Pipes spawnen
-            if (pipes.size() > 0 && pipes.get(pipes.size() - 1).x < boardWidth - 200) {
+            if (pipes.size() > 0 && pipes.get(pipes.size() - 1).x < boardWidth - 300) {
                 spawnPipes();
+            }
+
+            if(score % 30 == 0){
+                pipeSpeed += 0.02;
             }
 
             // Kollision
@@ -157,6 +196,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                 if (birdRect.intersects(pipeRect)) {
                     gameOver = true;
                     gameLoop.stop();
+                    pipeSpeed = 3;
                 }
             }
 
@@ -173,10 +213,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
+        if (!gameStarted){
+            gameStarted = true;
+            return;
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_SPACE && !gameOver) {
             velocity = jumpStrength;
             String filepath = "FlappyBirdMain/SoundFiles/Swoop.wav"; //start background music loop
-	        PlayMusic(filepath, 1);
+            PlayMusic(filepath, 1);
         }
 
         if (e.getKeyCode() == KeyEvent.VK_R && gameOver) {
@@ -188,6 +233,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override public void keyReleased(KeyEvent e) {}
 
     class Pipe {
+
+        boolean passed = false;
+
         int x, y, width, height;
         boolean isTop;
 
@@ -202,15 +250,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 
     public static void PlayMusic(String location, int loop) {         //music player
-		try
-		{
-			File musicPath = new File(location);
+        try
+        {
+            File musicPath = new File(location);
 
-			if (musicPath.exists()) {
-				AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-				Clip clip = AudioSystem.getClip();
-				clip.open(audioInput);
-				clip.start();
+            if (musicPath.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                clip.start();
                 if (loop != 1) {
                     if (loop == 0) {
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -218,16 +266,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                         clip.loop(loop);
                     }
                 }
-			}
-			else {System.out.println("Can*t find file");
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println(e);
-		}
+            }
+            else {System.out.println("Can*t find file");
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
 
 
 
-	}
+    }
 }
