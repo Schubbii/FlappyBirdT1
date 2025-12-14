@@ -184,7 +184,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                 spawnPipes();
             }
 
-            if(score % 30 == 0){
+            if(score % 10 == 0){
                 pipeSpeed += 0.02;
             }
 
