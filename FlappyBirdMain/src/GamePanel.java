@@ -134,7 +134,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if (!gameStarted && !gameOver) {
             g.setColor(Color.black);
             g.setFont(new Font("Arial", Font.BOLD, 26));
-            g.drawString("Bitte Leertaste drücken", 40, 300);
+            g.drawString("Bitte Leertaste drücken", 30, 300);
             return; // verhindert unnötiges Zeichnen
         }
 
