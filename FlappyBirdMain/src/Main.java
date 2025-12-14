@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,9 +12,7 @@ public class Main {
         GamePanel panel = new GamePanel(boardWidth, boardHeight);
 
 
-
-
-        Image icon = new ImageIcon(Main.class.getResource("/Bilder/Biene.png")).getImage();
+        Image icon = new ImageIcon(Objects.requireNonNull(Main.class.getResource("/Bilder/Biene.png"))).getImage();
         frame.setIconImage(icon);
 
         frame.add(panel);

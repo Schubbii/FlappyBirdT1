@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import java.io.File;                            //Audio Imports
+import java.util.Objects;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -13,8 +14,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     int boardWidth;
     int boardHeight;
-
-//    URL file = new URL("/sounds/gameover.wav");
 
     //gameStart
     boolean gameStarted = false;
@@ -53,16 +52,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         this.boardWidth = width;
         this.boardHeight = height;
 
-        setPreferredSize(new Dimension(width, height)); // <-- WICHTIG
+        setPreferredSize(new Dimension(width, height));
         setFocusable(true);
         addKeyListener(this);
-        requestFocusInWindow(); // <-- wichtig für Tastatureingaben
+        requestFocusInWindow();
 
-        // Beispielbilder (Oder PNGs ersetzen)
-        birdImage = new ImageIcon(getClass().getResource("/bilder/biene.png")).getImage(); // Lade PNG später rein, wenn du willst
-        pipeTopImage = new ImageIcon(getClass().getResource("/bilder/roehre_runter.png")).getImage();
-        pipeBottomImage = new ImageIcon(getClass().getResource("/bilder/roehre_hoch.png")).getImage();
-        backgroundImage = new ImageIcon(getClass().getResource("/bilder/hintergrund.png")).getImage();
+        // Beispielbilder
+        birdImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/bilder/biene.png"))).getImage();
+        pipeTopImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/bilder/roehre_runter.png"))).getImage();
+        pipeBottomImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/bilder/roehre_hoch.png"))).getImage();
+        backgroundImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/bilder/hintergrund.png"))).getImage();
 
         startGame();
     }
@@ -78,7 +77,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
         spawnPipes();
 
-        gameLoop = new Timer(16, this);  // ~60 FPS
+        gameLoop = new Timer(16, this);
         gameLoop.start();
     }
 
@@ -87,7 +86,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         int randomY = (int) (Math.random() * (boardHeight - pipeGap - 200)) + 200;
         // obere Pipe
         pipes.add(new Pipe(boardWidth, (randomY - pipeGap) - pipeTopImage.getHeight(null), pipeWidth, pipeTopImage.getHeight(null), true));
-
 
         // untere Pipe
         pipes.add(new Pipe(boardWidth, randomY, pipeWidth, boardHeight, false));
@@ -98,22 +96,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         super.paint(g);
 
         // Hintergrund
-//        g.setColor(Color.cyan);
-//        g.fillRect(0, 0, boardWidth, boardHeight);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
 
-
-
         // Bird
-//        g.setColor(Color.red);
-//        g.fillRect(birdX, birdY, birdWidth, birdHeight);
         g.drawImage(birdImage, birdX, birdY, birdWidth, birdHeight, null);
 
         // Pipes
-//        g.setColor(Color.green);
-//        for (Pipe p : pipes) {
-//            g.fillRect(p.x, p.y, p.width, p.height);
-//        }
         for (Pipe p : pipes) {
             if (p.isTop) {
                 // obere Pipe
@@ -165,11 +153,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
             // Bird Physik
             velocity += gravity;
-            birdY += velocity;
+            birdY += (int) velocity;
 
             // Pipes bewegen
             for (Pipe p : pipes) {
-                p.x -= pipeSpeed;
+                p.x -= (int) pipeSpeed;
             }
             for (Pipe p : pipes) {
                 // Nur untere Pipe bewerten, sonst doppelte Punkte
@@ -232,7 +220,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override public void keyTyped(KeyEvent e) {}
     @Override public void keyReleased(KeyEvent e) {}
 
-    class Pipe {
+    static class Pipe {
 
         boolean passed = false;
 
