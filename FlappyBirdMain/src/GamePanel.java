@@ -251,7 +251,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                     if (loop == 0) {
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
                     } else {
-                        clip.loop(loop);
+                        clip.loop(loop-1);
                     }
                 }
             }
