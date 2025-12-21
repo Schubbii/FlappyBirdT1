@@ -6,9 +6,7 @@ import java.util.ArrayList;
 
 import java.io.File;                            //Audio Imports
 import java.util.Objects;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
